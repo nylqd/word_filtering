@@ -3,7 +3,7 @@
 Word filtering demo implement by dfa and trie in Python
 
 ### dfa
-example of dfa while word list is `敏感词 用例 test case tea`
+example of dfa while word list is `敏感词 用例 test case tea 敏感`
 
 ```
 {
@@ -39,7 +39,7 @@ example of dfa while word list is `敏感词 用例 test case tea`
 ```
 
 ### trie
-example of dfa while word list is `敏感词 用例 test case tea`
+example of dfa while word list is `敏感词 用例 test case tea 敏感`
 
 ```
 {
