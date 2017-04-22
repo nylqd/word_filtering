@@ -66,6 +66,22 @@ class Trie:
 
         return ''.join(msg_new)
 
+    def display_node(self, node, indent):
+        ind = '\t' * indent
+        if node.value is not None:
+            print(ind, ':', node.value)
+        else:
+            for key in node.children.keys():
+                print(ind, '{', key)
+                self.display_node(node.children[key], indent + 1)
+                print(ind, '}')
+        return
+
+    def display(self):
+        print('{')
+        self.display_node(self.root, 0)
+        print('}')
+
 
 if __name__ == '__main__':
     # test case in chinese
@@ -73,15 +89,18 @@ if __name__ == '__main__':
     msg = '敏感词过滤测试用例'
 
     trie = Trie(words_list)
+
+    trie.display()
     # if message contains words need to filter
     print(trie.is_contain(msg))
     # message after filtering
     print(trie.filter(msg))
 
-    # rest case in english
-    words_list_en = ('test', 'case')
+    # test case in english
+    trie.add_word('test')
+    trie.add_word('case')
     msg_en = 'test case in english'
 
-    trie = Trie(words_list_en)
+    trie.display()
     print(trie.is_contain(msg_en))
     print(trie.filter(msg_en))
