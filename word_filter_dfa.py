@@ -49,7 +49,7 @@ class Dfa(object):
                 (parent, flag_end) = parent.children[message[index]]
                 if flag_end:
                     # print(sMsg[i:j + 1])
-                    msg_new.append(u'*' * (index - i + 1))  # 关键字替换
+                    msg_new.append(u'*' * (index - i + 1))  # replace word with *
                     i = index + 1
                     flag_continue = True
                     break
@@ -60,6 +60,20 @@ class Dfa(object):
             msg_new.append(message[i])
             i += 1
         return ''.join(msg_new)
+
+    def display_node(self, node, indent):
+        ind = '\t' * indent
+        if node.children is not None:
+            for key in node.children:
+                print(ind, '{', key, ':', node.children[key][1])
+                self.display_node(node.children[key][0], indent + 1)
+                print(ind, '}')
+        return
+
+    def display(self):
+        print('{')
+        self.display_node(self.root, 0)
+        print('}')
 
 
 if __name__ == '__main__':
@@ -73,10 +87,13 @@ if __name__ == '__main__':
     # message after filtering
     print(dfa.filter(msg))
 
-    # rest case in english
-    words_list_en = ('test', 'case')
+    # test case in english
+    dfa.add_word('test')
+    dfa.add_word('tea')
+    dfa.add_word('case')
     msg_en = 'test case in english'
 
-    dfa = Dfa(words_list_en)
+    dfa.display()
+
     print(dfa.is_contain(msg_en))
     print(dfa.filter(msg_en))
