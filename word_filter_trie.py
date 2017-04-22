@@ -1,57 +1,59 @@
 class Node(object):
     def __init__(self):
-        self.children = None
+        self.value = None
+        self.children = {}
 
 
-class Dfa(object):
+class Trie:
     def __init__(self, list_words):
-        self.root = None
         self.root = Node()
         for word in list_words:
             self.add_word(word)
 
     def add_word(self, word):
         node = self.root
-        index_end = len(word) - 1
         for i in range(len(word)):
-            if node.children is None:
-                # init with type dict
-                node.children = {word[i]: (Node(), i == index_end)}
-            elif word[i] not in node.children:
-                node.children[word[i]] = (Node(), i == index_end)
-            else:
-                if i == index_end:
-                    node.children[word[i]] = (node.children[word[i]], True)
+            if word[i] not in node.children:
+                child = Node()
+                node.children[word[i]] = child
+            node = node.children[word[i]]
 
-            node = node.children[word[i]][0]
+        node.value = word
+
+    def search(self, word):
+        node = self.root
+        for i in range(len(word)):
+            if word[i] not in node.children:
+                return None
+            else:
+                node = node.children[word[i]]
+
+        return node.value
 
     def is_contain(self, message):
-        root = self.root
         len_msg = len(message)
         for i in range(len_msg):
-            parent = root
+            parent = self.root
             index = i
             while index < len_msg and parent.children is not None and message[index] in parent.children:
-                (parent, flag_end) = parent.children[message[index]]
-                if flag_end:
+                parent = parent.children[message[index]]
+                if parent.value is not None:
                     return True
                 index += 1
         return False
 
     def filter(self, message):
         msg_new = []
-        root = self.root
         len_msg = len(message)
         i = 0
         flag_continue = False
         while i < len_msg:
-            parent = root
+            parent = self.root
             index = i
             while index < len_msg and parent.children is not None and message[index] in parent.children:
-                (parent, flag_end) = parent.children[message[index]]
-                if flag_end:
-                    # print(sMsg[i:j + 1])
-                    msg_new.append(u'*' * (index - i + 1))  # 关键字替换
+                parent = parent.children[message[index]]
+                if parent.value is not None:
+                    msg_new.append(u'*' * (index - i + 1))
                     i = index + 1
                     flag_continue = True
                     break
@@ -61,6 +63,7 @@ class Dfa(object):
                 continue
             msg_new.append(message[i])
             i += 1
+
         return ''.join(msg_new)
 
 
@@ -69,16 +72,16 @@ if __name__ == '__main__':
     words_list = ('敏感词', '用例')
     msg = '敏感词过滤测试用例'
 
-    dfa = Dfa(words_list)
+    trie = Trie(words_list)
     # if message contains words need to filter
-    print(dfa.is_contain(msg))
+    print(trie.is_contain(msg))
     # message after filtering
-    print(dfa.filter(msg))
+    print(trie.filter(msg))
 
     # rest case in english
     words_list_en = ('test', 'case')
     msg_en = 'test case in english'
 
-    dfa = Dfa(words_list_en)
-    print(dfa.is_contain(msg_en))
-    print(dfa.filter(msg_en))
+    trie = Trie(words_list_en)
+    print(trie.is_contain(msg_en))
+    print(trie.filter(msg_en))
