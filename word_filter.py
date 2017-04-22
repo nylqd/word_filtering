@@ -14,8 +14,11 @@ class Dfa(object):
         node = self.root
         index_end = len(word) - 1
         for i in range(len(word)):
-            if node.children is None or word[i] not in node.children:
+            if node.children is None:
+                # init with type dict
                 node.children = {word[i]: (Node(), i == index_end)}
+            elif word[i] not in node.children:
+                node.children[word[i]] = (Node(), i == index_end)
             else:
                 if i == index_end:
                     node.children[word[i]] = (node.children[word[i]], True)
@@ -62,8 +65,20 @@ class Dfa(object):
 
 
 if __name__ == '__main__':
-    dfa = Dfa(('吓得', '女儿', '派出所'))
-    dfa.add_word('乱咬')
-    msg = '四处乱咬乱吠，吓得家中 11 岁的女儿躲在屋里不敢出来，直到辖区派出所民警赶到后，才将孩子从屋中救出。最后在征得主人同意后，民警和村民合力将这只发疯的狗打死'
-    print(dfa.filter(msg))
+    # test case in chinese
+    words_list = ('敏感词', '用例')
+    msg = '敏感词过滤测试用例'
+
+    dfa = Dfa(words_list)
+    # if message contains words need to filter
     print(dfa.is_contain(msg))
+    # message after filtering
+    print(dfa.filter(msg))
+
+    # rest case in english
+    words_list_en = ('test', 'case')
+    msg_en = 'test case in english'
+
+    dfa = Dfa(words_list_en)
+    print(dfa.is_contain(msg_en))
+    print(dfa.filter(msg_en))
