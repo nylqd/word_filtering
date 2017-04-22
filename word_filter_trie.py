@@ -68,11 +68,9 @@ class Trie:
 
     def display_node(self, node, indent):
         ind = '\t' * indent
-        if node.value is not None:
-            print(ind, ':', node.value)
-        else:
+        if node.children is not None:
             for key in node.children.keys():
-                print(ind, '{', key)
+                print(ind, '{', key, ':', node.children[key].value)
                 self.display_node(node.children[key], indent + 1)
                 print(ind, '}')
         return
@@ -98,6 +96,7 @@ if __name__ == '__main__':
 
     # test case in english
     trie.add_word('test')
+    trie.add_word('tea')
     trie.add_word('case')
     msg_en = 'test case in english'
 
