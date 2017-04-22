@@ -8,7 +8,7 @@ example of dfa while word list is `敏感词 用例 test case tea`
 ```
 {
  { 敏 : False
-	 { 感 : False
+	 { 感 : True
 		 { 词 : True
 		 }
 	 }
@@ -44,7 +44,7 @@ example of dfa while word list is `敏感词 用例 test case tea`
 ```
 {
  { 敏 : None
-	 { 感 : None
+	 { 感 : 敏感
 		 { 词 : 敏感词
 		 }
 	 }
