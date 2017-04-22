@@ -21,7 +21,7 @@ class Dfa(object):
                 node.children[word[i]] = (Node(), i == index_end)
             else:
                 if i == index_end:
-                    node.children[word[i]] = (node.children[word[i]], True)
+                    node.children[word[i]] = (node.children[word[i]][0], True)
 
             node = node.children[word[i]][0]
 
@@ -82,6 +82,7 @@ if __name__ == '__main__':
     msg = '敏感词过滤测试用例'
 
     dfa = Dfa(words_list)
+    dfa.add_word('敏感')
     # if message contains words need to filter
     print(dfa.is_contain(msg))
     # message after filtering

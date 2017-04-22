@@ -87,6 +87,7 @@ if __name__ == '__main__':
     msg = '敏感词过滤测试用例'
 
     trie = Trie(words_list)
+    trie.add_word('敏感')
     # if message contains words need to filter
     print(trie.is_contain(msg))
     # message after filtering
